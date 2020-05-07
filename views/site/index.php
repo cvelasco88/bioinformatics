@@ -1,6 +1,7 @@
 <?php
 
 use yiier\chartjs\ChartJs;
+use yii\httpclient\Client;
 
 /* @var $this yii\web\View */
 
@@ -37,6 +38,26 @@ $this->title = 'My Yii Application';
 		 ]
 	    ]
 	]);?>
+
+	<?php
+	$client = new Client();
+	$response = $client->createRequest()
+	    ->setMethod('GET')
+	    ->setUrl('https://ega-archive.org/metadata/v2/datasets')
+	    //->setData(['name' => 'John Doe', 'email' => 'johndoe@example.com'])
+	    ->send();
+	if ($response->isOk) {
+	?>
+	<pre>
+	<?= print_r($response->data); ?>
+	</pre>
+	<?php	    
+	    //$newUserId = $response->data['id'];
+	    //echo $newUserId;
+	} else {
+	    echo "Nope";
+	}
+	?>
 
         <div class="row">
             <div class="col-lg-4">
