@@ -40,10 +40,31 @@ $this->title = 'My Yii Application';
 	]);?>
 
 	<?php
+	//  https://ega-archive.org/metadata/v2/datasets/{id}?idType=EGA_STABLE_ID
+	$client1 = new Client();
+	$response1 = $client1->createRequest()
+    	    ->setFormat(Client::FORMAT_RAW_URLENCODED)
+	    ->setMethod('GET')
+	    ->setUrl('https://www.ebi.ac.uk/ena/data/view/A00145&display=fasta')
+	    //->setData(['name' => 'John Doe', 'email' => 'johndoe@example.com'])
+	    ->send();
+	if ($response1->isOk) {
+	?>
+	<pre><?= $response1->content; ?></pre>
+	<?php	    
+	    //$newUserId = $response->data['id'];
+	    //echo $newUserId;
+	} else {
+	    echo "Nope";
+	}
+	?>
+
+	<?php
+	//  https://ega-archive.org/metadata/v2/datasets/{id}?idType=EGA_STABLE_ID
 	$client = new Client();
 	$response = $client->createRequest()
 	    ->setMethod('GET')
-	    ->setUrl('https://ega-archive.org/metadata/v2/datasets')
+	    ->setUrl('https://ega-archive.org/metadata/v2/datasets/EGAD00001002897?idType=EGA_STABLE_ID')
 	    //->setData(['name' => 'John Doe', 'email' => 'johndoe@example.com'])
 	    ->send();
 	if ($response->isOk) {
