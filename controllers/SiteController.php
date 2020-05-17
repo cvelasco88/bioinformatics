@@ -65,6 +65,16 @@ class SiteController extends Controller
     }
 
     /**
+     * Displays search.
+     *
+     * @return string
+     */
+    public function actionSearch()
+    {
+        return $this->render('search');
+    }
+
+    /**
      * Login action.
      *
      * @return Response|string
