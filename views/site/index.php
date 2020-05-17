@@ -1,5 +1,6 @@
 <?php
 
+use app\parsers\FastaParser;
 use yiier\chartjs\ChartJs;
 use yii\httpclient\Client;
 
@@ -11,6 +12,32 @@ $this->title = 'My Yii Application';
 
 
     <div class="body-content">
+
+        <?php
+        //  https://ega-archive.org/metadata/v2/datasets/{id}?idType=EGA_STABLE_ID
+        $client = new Client();
+        $response = $client->createRequest()
+                ->setFormat(Client::FORMAT_RAW_URLENCODED)
+            ->setMethod('GET')
+            ->setUrl('https://www.ebi.ac.uk/ena/data/view/A00145&display=fasta')
+            //->setData(['name' => 'John Doe', 'email' => 'johndoe@example.com'])
+            ->send();
+        if ($response->isOk) {
+        ?>
+        <pre><?= $response->content; ?></pre>
+        <?php	    
+            //$newUserId = $response->data['id'];
+            //echo $newUserId;
+        } else {
+            echo "Nope";
+        }
+        ?>
+        <div>
+            <?php
+                $data = FastaParser::parseContent($response->content);
+                print_r($data);
+            ?>
+        </div>
 
         <div class="row">
             <div class="col-xs-12">
