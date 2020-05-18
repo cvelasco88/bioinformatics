@@ -7,26 +7,26 @@ use Iterator;
 /**
  * ContactForm is the model behind the contact form.
  */
-class NucleicAcid extends Biomolecule implements Iterator
+class Helix extends Biomolecule implements Iterator
 {
-    /** @var NucleoBasePair[] $nbpPairs */
-    public $nbpPairs;
+    /** @var NucleoBase[] $nbpArray */
+    public $nbpArray;
     /** */
     private $index = 0;
 
     /**
-     * @param NucleoBasePair[] $nbpPairs
+     * @param NucleoBase[] $nbpArray
      */
-    function __construct($nbpPairs = [])
+    function __construct($nbpArray = [])
     {
-        $this->nbpPairs = $nbpPairs;
+        $this->nbpArray = $nbpArray;
     }
 
     /** Array Methods */
 
     public function current()
     {
-        return $this->nbpPairs[$this->index];
+        return $this->nbpArray[$this->index];
     }
 
     public function next()
@@ -41,7 +41,7 @@ class NucleicAcid extends Biomolecule implements Iterator
 
     public function valid()
     {
-        return isset($this->nbpPairs[$this->key()]);
+        return isset($this->nbpArray[$this->key()]);
     }
 
     public function rewind()
@@ -51,7 +51,14 @@ class NucleicAcid extends Biomolecule implements Iterator
 
     public function reverse()
     {
-        $this->nbpPairs = array_reverse($this->nbpPairs);
+        $this->nbpArray = array_reverse($this->nbpArray);
         $this->rewind();
+    }
+
+    public function __toString()
+    {
+        return join("", array_map(function($nb){
+            return strval($nb);
+        }, $this->nbpArray));
     }
 }

@@ -8,10 +8,8 @@ use Yii;
 /**
  * ContactForm is the model behind the contact form.
  */
-abstract class Biomolecule extends stdClass
+abstract class Biomolecule
 {
-    public $name;
-
     /** */
     function __construct()
     {

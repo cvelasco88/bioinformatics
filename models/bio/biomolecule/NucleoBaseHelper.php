@@ -22,6 +22,7 @@ class NucleoBaseHelper
      */
     static function getBaseBySymbol($symbol){
         $bioBase = null;
+        $symbol = strtoupper($symbol);
         switch($symbol){
             case Adenine::symbol:
                 $bioBase = new Adenine;

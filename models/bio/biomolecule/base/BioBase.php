@@ -19,6 +19,13 @@ abstract class BioBase extends stdClass
 
     /** getters & setters */
     
-    /** */
+    /** 
+     * @return string
+    */
     public abstract function getSymbol();
+
+    public function __toString()
+    {
+        return $this->getSymbol();
+    }
 }

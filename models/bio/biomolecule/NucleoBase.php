@@ -56,4 +56,9 @@ class NucleoBase extends stdClass
         $nb = new NucleoBase($complementary);
         return $nb;
     }
+
+    public function __toString()
+    {
+        return $this->getSymbol();
+    }
 }

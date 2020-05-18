@@ -8,7 +8,7 @@ use Yii;
 /**
  * ContactForm is the model behind the contact form.
  */
-abstract class Guanine extends BioBase
+final class Guanine extends BioBase
 {
     const symbol = "G";
 

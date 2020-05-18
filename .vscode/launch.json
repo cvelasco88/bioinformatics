@@ -10,9 +10,9 @@
             "request": "launch",
             "port": 9000,
             "stopOnEntry": false,
-            /*"pathMappings": {
-                "/opt/lampp⁩/⁨htdocs⁩/bioinformatics": "${workspaceRoot}",
-            }*/
+            "pathMappings": {
+                "/opt/lampp/htdocs⁩/bioinformatics/web": "${workspaceRoot}/web",
+            }
         },
         {
             "name": "Launch currently open script",
@@ -20,7 +20,8 @@
             "request": "launch",
             "program": "${file}",
             "cwd": "${fileDirname}",
-            "port": 9000
+            "port": 9000,
+            "stopOnEntry": false,
         }
     ]
 }

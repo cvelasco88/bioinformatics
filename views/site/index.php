@@ -1,10 +1,14 @@
 <?php
 
+use app\helpers\BioHelper;
+use app\helpers\FileHelper;
+use app\models\bio\biomolecule\DeoxyribonucleicAcid;
+use app\models\bio\biomolecule\Helix;
 use app\parsers\FastaParser;
 use yiier\chartjs\ChartJs;
 use yii\httpclient\Client;
 
-/* @var $this yii\web\View */
+/** @var yii\web\View $this */
 
 $this->title = 'My Yii Application';
 ?>
@@ -15,7 +19,7 @@ $this->title = 'My Yii Application';
 
         <?php
         //  https://ega-archive.org/metadata/v2/datasets/{id}?idType=EGA_STABLE_ID
-        $client = new Client();
+        /*$client = new Client();
         $response = $client->createRequest()
                 ->setFormat(Client::FORMAT_RAW_URLENCODED)
             ->setMethod('GET')
@@ -31,12 +35,40 @@ $this->title = 'My Yii Application';
         } else {
             echo "Nope";
         }
+        $path = Yii::getAlias("@files");
+        $path .= DIRECTORY_SEPARATOR . "sample.fasta";
+        FileHelper::save($path, $response->content);
+        $data = $response->content;
+        print_r($data);        
+        */
         ?>
         <div>
             <?php
-                $data = FastaParser::parseContent($response->content);
-                print_r($data);
+                $path = Yii::getAlias("@files");
+                $path .= DIRECTORY_SEPARATOR . "sample.fasta";
+                $fileContent = FileHelper::read($path);
+                $data = FastaParser::parseContent($fileContent);
             ?>
+            <hr>
+            <pre><?= $fileContent ?></pre>
+            <hr>
+            <pre><?= json_encode($data, JSON_PRETTY_PRINT); ?></pre>        
+        </div>
+        <div>
+            <?php
+            foreach($data as $item){ ?>
+                <h3>Helix: <?= $item->header ?></h3>
+                <div>
+                    <pre><?php
+                        $helix = BioHelper::createHelix($item->body);
+                        print_r(strval($helix));
+                    ?></pre>
+                    <hr>
+                    <pre><?php
+                        print_r(json_encode($helix));
+                    ?></pre>
+                </div>
+            <?php } ?>
         </div>
 
         <div class="row">
