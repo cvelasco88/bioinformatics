@@ -9,6 +9,9 @@ use yii\web\Response;
 use yii\filters\VerbFilter;
 use app\models\LoginForm;
 use app\models\ContactForm;
+use app\models\UploadForm;
+use FastaForm;
+use yii\web\UploadedFile;
 
 class SiteController extends Controller
 {
@@ -134,5 +137,23 @@ class SiteController extends Controller
     public function actionAbout()
     {
         return $this->render('about');
+    }
+
+    public function actionUpload()
+    {
+        $model = new UploadForm();
+
+        if (Yii::$app->request->isPost) {
+            $model->file = UploadedFile::getInstance($model, 'file');
+
+            if ($model->file && $model->validate()) {          
+                $uploadsPath = Yii::getAlias("@uploads");
+                $uploadedFile = $uploadsPath . DIRECTORY_SEPARATOR . $model->file->baseName . '.' . $model->file->extension;
+                $model->file->saveAs($uploadedFile);
+                chmod($uploadedFile, 0777);
+            }
+        }
+
+        return $this->render('upload', ['model' => $model, 'filepath' => $uploadedFile]);
     }
 }

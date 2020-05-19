@@ -97,4 +97,23 @@ class FastaParser
 
         return $result;
     }
+
+     /** 
+     * @param string $data
+     * @return stdClass
+    */
+    public static function join($data)
+    {
+        // create new
+        $rItem = new stdClass;
+        $rItem->header = [];
+        $rItem->body = "";
+
+        foreach($data as $item){
+            array_push($rItem->header, $item->header);
+            $rItem->body .= $item->body;
+        }
+
+        return $rItem;
+    }
 }

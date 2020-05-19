@@ -4,7 +4,10 @@ use app\helpers\BioHelper;
 use app\helpers\FileHelper;
 use app\models\bio\biomolecule\DeoxyribonucleicAcid;
 use app\models\bio\biomolecule\Helix;
+use app\models\UploadForm;
 use app\parsers\FastaParser;
+use yii\bootstrap\ActiveForm;
+use yii\helpers\Url;
 use yiier\chartjs\ChartJs;
 use yii\httpclient\Client;
 
@@ -35,16 +38,21 @@ $this->title = 'My Yii Application';
         } else {
             echo "Nope";
         }
-        $path = Yii::getAlias("@files");
+        $path = Yii::getAlias("@uploads");
         $path .= DIRECTORY_SEPARATOR . "sample.fasta";
         FileHelper::save($path, $response->content);
         $data = $response->content;
         print_r($data);        
         */
         ?>
+        <?php $form = ActiveForm::begin(['options' => ['enctype' => 'multipart/form-data'], 'action' => Url::to(['site/upload']),]); ?>
+        <?php $model = new UploadForm(); ?>
+        <?= $form->field($model, 'file')->fileInput() ?>
+        <button>Submit</button>
+        <?php ActiveForm::end() ?>
         <div>
             <?php
-                $path = Yii::getAlias("@files");
+                $path = Yii::getAlias("@uploads");
                 $path .= DIRECTORY_SEPARATOR . "sample.fasta";
                 $fileContent = FileHelper::read($path);
                 $data = FastaParser::parseContent($fileContent);
