@@ -9,7 +9,7 @@ use Yii;
 /**
  * ContactForm is the model behind the contact form.
  */
-class FileHelper
+class BioFileHelper
 {
     /** 
      * Create

@@ -1,5 +1,6 @@
 <?php
 
+use app\helpers\BioFileHelper;
 use yiier\chartjs\ChartJs;
 use yii\httpclient\Client;
 
@@ -52,6 +53,9 @@ $this->title = 'My Yii Application';
 	?>
 	<pre><?= $response1->content; ?></pre>
 	<?php	    
+		$path = Yii::getAlias("@uploads");
+		$path .= DIRECTORY_SEPARATOR . "sample.fasta";
+		BioFileHelper::save($path, $response1->content);
 	    //$newUserId = $response->data['id'];
 	    //echo $newUserId;
 	} else {

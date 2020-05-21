@@ -1,9 +1,10 @@
 <?php
 
 use app\helpers\BioHelper;
-use app\helpers\FileHelper;
+use app\helpers\BioFileHelper;
 use app\models\bio\biomolecule\DeoxyribonucleicAcid;
 use app\models\bio\biomolecule\Helix;
+use app\models\bio\cell\EukaryoticCell;
 use app\models\UploadForm;
 use app\parsers\FastaParser;
 use yii\bootstrap\ActiveForm;
@@ -40,7 +41,7 @@ $this->title = 'My Yii Application';
         }
         $path = Yii::getAlias("@uploads");
         $path .= DIRECTORY_SEPARATOR . "sample.fasta";
-        FileHelper::save($path, $response->content);
+        BioFileHelper::save($path, $response->content);
         $data = $response->content;
         print_r($data);        
         */
@@ -54,8 +55,14 @@ $this->title = 'My Yii Application';
             <?php
                 $path = Yii::getAlias("@uploads");
                 $path .= DIRECTORY_SEPARATOR . "sample.fasta";
-                $fileContent = FileHelper::read($path);
-                $data = FastaParser::parseContent($fileContent);
+                $fileContent = "";
+                $data = [];
+                try {
+                    $fileContent = BioFileHelper::read($path);
+                    $data = FastaParser::parseContent($fileContent);
+                } catch(Exception $ex){
+                    // handle exception
+                }
             ?>
             <hr>
             <pre><?= $fileContent ?></pre>
@@ -67,8 +74,20 @@ $this->title = 'My Yii Application';
             foreach($data as $item){ ?>
                 <h3>Helix: <?= $item->header ?></h3>
                 <div>
-                    <pre><?php
+                    <?php
                         $helix = BioHelper::createHelix($item->body);
+                        $eCell = new EukaryoticCell($helix);
+                    ?>
+                    <pre><?php
+                        $counts = count_chars(strval($helix), 1);
+                        $countsFix = [];
+                        foreach($counts as $key => $value){
+                            $countsFix[chr($key)] = $value;
+                        }
+                        echo json_encode($countsFix);
+                    ?></pre>
+                    <hr>
+                    <pre><?php
                         print_r(strval($helix));
                     ?></pre>
                     <hr>

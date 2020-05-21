@@ -3,6 +3,8 @@
 namespace app\helpers;
 
 use app\models\bio\biomolecule\Helix;
+use app\models\bio\biomolecule\HelixSimple;
+use app\models\bio\biomolecule\NucleicAcidSimpleStream;
 use app\models\bio\biomolecule\NucleoBase;
 use app\models\bio\biomolecule\NucleoBaseHelper;
 use Exception;
@@ -27,7 +29,8 @@ class BioHelper
             $nb = NucleoBaseHelper::getBaseBySymbol($char);
             array_push($nbArray, $nb);
         }
-        $helix = new Helix($nbArray);
+        $naSimple = new NucleicAcidSimpleStream($nbArray);
+        $helix = new Helix($naSimple);
         return $helix;
     }
 }

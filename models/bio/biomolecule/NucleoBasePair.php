@@ -10,24 +10,24 @@ use app\models\bio\biomolecule\NucleicAcid;
  */
 class NucleoBasePair
 {
-    /** @var NucleoBase $nbp1 */
-    public $nbp1;
-    /** @var NucleoBase $nbp2 */
-    public $nbp2;
+    /** @var NucleoBase $first */
+    public $first;
+    /** @var NucleoBase $second */
+    public $second;
 
     /** */
-    public function __construct($nbp1 = null, $nbp2 = null)
+    public function __construct($first = null, $second = null)
     {
-        $this->nbp1 = $nbp1;
-        $this->nbp2 = $nbp2;
+        $this->first = $first;
+        $this->second = $second;
     }
 
     /** */
     public function transcribe($mode = 0)
     {
-        $tNbp1 = $this->nbp1->transcribe($mode);
-        $tNbp2 = $this->nbp2->transcribe($mode);
-        $nbpNew = new NucleoBasePair($tNbp1, $tNbp2);
+        $tFirst = $this->first->transcribe($mode);
+        $tSecond = $this->second->transcribe($mode);
+        $nbpNew = new NucleoBasePair($tFirst, $tSecond);
         return $nbpNew;
     }
 }

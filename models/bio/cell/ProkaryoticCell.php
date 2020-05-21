@@ -7,17 +7,18 @@ namespace app\models\bio\cell;
  */
 class ProkaryoticCell extends Cell
 {
-    public $name;
-    public $email;
-    public $subject;
-    public $body;
-    public $verifyCode;
+    /**
+     * @var Gene[] $genes
+     */
+    public $genes;
+    
 
-    /** */
-    function __construct()
+    /** 
+     * @param Gene[] $genes
+    */
+    function __construct($genes = null)
     {
-        // print "En el constructor\n";
-        // parent::__construct();
+        $this->genes = $genes;
     }
 
     function __destruct()

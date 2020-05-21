@@ -12,7 +12,7 @@ use app\models\bio\biomolecule\base\Uracil;
 /**
  * ContactForm is the model behind the contact form.
  */
-class NucleoBase extends stdClass
+class NucleoBase
 {
     /** @var BioBase bioBase */
     public $bioBase;

@@ -8,7 +8,7 @@ use Yii;
 /**
  * ContactForm is the model behind the contact form.
  */
-class Gene extends Helix
+class MessengerRNA extends Helix
 {
-    
+
 }

@@ -7,58 +7,19 @@ use Iterator;
 /**
  * ContactForm is the model behind the contact form.
  */
-class Helix extends Biomolecule implements Iterator
+class Helix
 {
-    /** @var NucleoBase[] $nbpArray */
-    public $nbpArray;
-    /** */
-    private $index = 0;
+    /** @var NucleicAcid $code */
+    public $code;
 
-    /**
-     * @param NucleoBase[] $nbpArray
-     */
-    function __construct($nbpArray = [])
+    /** @param NucleicAcid $code */
+    function __construct($code = null)
     {
-        $this->nbpArray = $nbpArray;
+        $this->code = $code;
     }
 
-    /** Array Methods */
-
-    public function current()
+    function __toString()
     {
-        return $this->nbpArray[$this->index];
-    }
-
-    public function next()
-    {
-        $this->index++;
-    }
-
-    public function key()
-    {
-        return $this->index;
-    }
-
-    public function valid()
-    {
-        return isset($this->nbpArray[$this->key()]);
-    }
-
-    public function rewind()
-    {
-        $this->index = 0;
-    }
-
-    public function reverse()
-    {
-        $this->nbpArray = array_reverse($this->nbpArray);
-        $this->rewind();
-    }
-
-    public function __toString()
-    {
-        return join("", array_map(function($nb){
-            return strval($nb);
-        }, $this->nbpArray));
+        return strval($this->code);
     }
 }
