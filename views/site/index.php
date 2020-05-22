@@ -4,6 +4,8 @@ use app\helpers\BioHelper;
 use app\helpers\BioFileHelper;
 use app\models\bio\biomolecule\DeoxyribonucleicAcid;
 use app\models\bio\biomolecule\Helix;
+use app\models\bio\biomolecule\NucleicAcidSimpleStream;
+use app\models\bio\biomolecule\NucleoBaseHelper;
 use app\models\bio\cell\EukaryoticCell;
 use app\models\UploadForm;
 use app\parsers\FastaParser;
@@ -72,9 +74,16 @@ $this->title = 'My Yii Application';
         <div>
             <?php
             foreach($data as $item){ ?>
-                <h3>Helix: <?= $item->header ?></h3>
                 <div>
                     <?php
+
+                        $backgroundColor = [
+                            "A" => "#f66020",
+                            "C" => "#f7c02f",
+                            "G" => "#706e44",
+                            "T" => "#30b59a",                            
+                            "U" => "#142f3f",
+                        ];
                         $helix = BioHelper::createHelix($item->body);
                         $eCell = new EukaryoticCell($helix);
                     ?>
@@ -86,13 +95,87 @@ $this->title = 'My Yii Application';
                         }
                         echo json_encode($countsFix);
                     ?></pre>
-                    <hr>
+                    <?= ChartJs::widget([
+                        'type' => 'line',
+                        'options' => [
+                        'height' => 200,
+                        'width' => 600
+                        ],
+                        'data' => [
+                            'labels' => array_keys($countsFix),
+                            'datasets' => array_map(function($key) use ($countsFix, $backgroundColor) {
+                                return [
+                                    'label'=> '# '.$key,
+                                    'data' => array_map(function($key2) use ($key, $countsFix) {
+                                        if($key == $key2) {
+                                            return $countsFix[$key];
+                                        } else {
+                                            return 0;
+                                        }
+                                    }, array_keys($countsFix)),
+                                    'backgroundColor' => [$backgroundColor[$key]],
+                                ];
+                            }, array_keys($countsFix)),
+                        ]
+                    ]);?>
+
                     <pre><?php
-                        print_r(strval($helix));
+                            // mRNA
+                            $naHelix = $helix->transcribe();
+                            $naHelix->mode = NucleoBaseHelper::MODE_RNA;
+                            $mHelix = new Helix($naHelix);
+                            // mRNA
+                            $counts = count_chars(strval($mHelix), 1);
+                            $countsFix = [];
+                            foreach($counts as $key => $value){
+                                $countsFix[chr($key)] = $value;
+                            }
+                            echo json_encode($countsFix);
+                        ?></pre>
+                        <?= ChartJs::widget([
+                            'type' => 'line',
+                            'options' => [
+                            'height' => 200,
+                            'width' => 600
+                            ],
+                            'data' => [
+                                'labels' => array_keys($countsFix),
+                                'datasets' => array_map(function($key) use ($countsFix, $backgroundColor) {
+                                    return [
+                                        'label'=> '# '.$key,
+                                        'data' => array_map(function($key2) use ($key, $countsFix) {
+                                            if($key == $key2) {
+                                                return $countsFix[$key];
+                                            } else {
+                                                return 0;
+                                            }
+                                        }, array_keys($countsFix)),
+                                        'backgroundColor' => [$backgroundColor[$key]],
+                                    ];
+                                }, array_keys($countsFix)),
+                            ]
+                        ]);?>
+                    </div>
+                        
+                    <h3>Helix: <?= $item->header ?></h3>
+                    <div>
+                        <pre><?php
+                            print_r(strval($helix));
+                        ?></pre>
+                        <hr>
+                        <pre><?php
+                            //print_r(json_encode($helix));
+                        ?></pre>
+                    </div>
+                </div>
+                    
+                <div>
+                    <pre><?php
+                        print_r(strval($mHelix));
                     ?></pre>
                     <hr>
                     <pre><?php
-                        print_r(json_encode($helix));
+                        //print_r(json_encode($mHelix));
                     ?></pre>
                 </div>
             <?php } ?>

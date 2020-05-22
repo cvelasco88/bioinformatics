@@ -76,4 +76,30 @@ class NucleicAcidSimpleStream extends NucleicAcid
             return $elem->complementary($this->mode);
         }, $this->elems);
     }
+
+    /**
+     * @return NucleicAcid
+     */
+    public function invert(){
+        $base = array_map(function($elem){
+            /** @var NucleoBase $elem */
+            $nbNew = new NucleoBase($elem->complementary());
+            return $nbNew;
+        }, $this->elems);
+        $newNA = new NucleicAcidSimpleStream($base);
+        return $newNA;
+    }
+
+    /**
+     * @return NucleoBase[]
+     */
+    public function transcribe(){
+        $transcription = array_map(function($elem){
+            /** @var NucleoBase $elem */
+            return new NucleoBase(
+                $elem->transcribe($this->mode),
+            );
+        }, $this->getFirstStream());
+        return new NucleicAcidSimpleStream($transcription);
+    }
 }

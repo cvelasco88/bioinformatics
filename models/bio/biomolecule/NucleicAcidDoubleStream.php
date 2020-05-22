@@ -13,8 +13,7 @@ class NucleicAcidDoubleStream extends NucleicAcid
 
     /** @var NucleoBasePair[] $elems */
     public $elems;    
-    /** @var int $mode */
-    public $mode = NucleoBaseHelper::MODE_DNA;
+    
 
     /**
      * @param NucleoBasePair[] $elems
@@ -79,5 +78,33 @@ class NucleicAcidDoubleStream extends NucleicAcid
             /** @var NucleoBasePair $elem */
             return $elem->second;
         }, $this->elems);
+    }
+
+
+    /**
+     * @return NucleicAcid
+     */
+    public function invert(){
+        $base = array_map(function($elem){
+            /** @var NucleoBasePair $elem */
+            $nbpNew = new NucleoBasePair($elem->second, $elem->first);
+            return $nbpNew;
+        }, $this->elems);
+        $newNA = new NucleicAcidDoubleStream($base);
+        return $newNA;
+    }
+
+    /**
+     * @return NucleoBase[]
+     */
+    public function transcribe(){
+        $transcription = array_map(function($elem){
+            /** @var NucleoBasePair $elem */
+            return new NucleoBasePair(
+                $elem->fist->transcribe($this->mode),
+                $elem->second->transcribe($this->mode),
+            );
+        }, $this->getFirstStream());
+        return new NucleicAcidDoubleStream($transcription);
     }
 }

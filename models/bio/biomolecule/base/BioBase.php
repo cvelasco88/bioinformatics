@@ -8,7 +8,7 @@ use Yii;
 /**
  * ContactForm is the model behind the contact form.
  */
-abstract class BioBase extends stdClass
+abstract class BioBase
 {
 
     /** */

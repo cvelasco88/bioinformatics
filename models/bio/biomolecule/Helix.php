@@ -22,4 +22,23 @@ class Helix
     {
         return strval($this->code);
     }
+
+    public function getStream(){
+        return $this->code->getFirstStream();
+    }
+
+    public function getStreamReverse(){
+        return $this->code->getSecondStream();
+    }
+
+    public function invert(){
+        return $this->code->invert();
+    }
+
+    /**
+     * @return NucleicAcid
+     */
+    public function transcribe(){
+        return $this->code->transcribe();
+    }
 }

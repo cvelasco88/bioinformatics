@@ -27,7 +27,8 @@ class BioHelper
         for ($i = 0; $i < $count; $i++){
             $char = $str[$i];
             $nb = NucleoBaseHelper::getBaseBySymbol($char);
-            array_push($nbArray, $nb);
+            $bb = new NucleoBase($nb);
+            array_push($nbArray, $bb);
         }
         $naSimple = new NucleicAcidSimpleStream($nbArray);
         $helix = new Helix($naSimple);
